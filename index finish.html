@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toey 💖 Our 2nd Month Anniversary</title>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+    :root {
+        --premium-pink: #ff758c;
+        --deep-pink: #ff4b5c;
+        --white-glass: rgba(255, 255, 255, 0.15);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Mitr', sans-serif;
+        text-align: center;
+        background: radial-gradient(circle at center, #ff9a9e 0%, #fecfef 100%);
+        background-attachment: fixed;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* --- Ambient Elements --- */
+    .ambient-heart {
+        position: fixed;
+        bottom: -10vh;
+        font-size: 20px;
+        z-index: 1;
+        pointer-events: none;
+        animation: floatUp 6s linear infinite;
+        opacity: 0.6;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+        20% { opacity: 0.6; }
+        100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* --- หน้าแรกสุด (Start Button Page) --- */
+    #start-page {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle, #ffb7c5, #ff758c);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .start-btn {
+        padding: 20px 45px;
+        font-size: 24px;
+        background: white;
+        color: var(--deep-pink);
+        border: none;
+        border-radius: 60px;
+        font-family: 'Mitr', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        transition: 0.4s;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        50% { transform: scale(1.08); box-shadow: 0 15px 45px rgba(255,255,255,0.4); }
+        100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    }
+
+    /* --- Luxury Intro Overlay --- */
+    #intro-overlay {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(135deg, #ff9a9e, #ff758c);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    #intro-text {
+        font-size: 5rem;
+        font-weight: 700;
+        text-shadow: 0 0 40px rgba(255,255,255,0.8);
+        opacity: 0;
+    }
+
+    .epic-zoom { animation: epicZoom 1.4s forwards; }
+    @keyframes epicZoom {
+        0% { transform: scale(0.5); opacity: 0; filter: blur(20px); }
+        50% { transform: scale(1.1); opacity: 1; filter: blur(0px); }
+        100% { transform: scale(1); opacity: 0; filter: blur(10px); }
+    }
+
+    .final-hold { animation: finalHold 6.5s forwards; }
+    @keyframes finalHold {
+        0% { transform: scale(0.6); opacity: 0; filter: blur(20px); }
+        15% { transform: scale(1); opacity: 1; filter: blur(0px); }
+        85% { transform: scale(1); opacity: 1; filter: blur(0px); }
+        100% { transform: scale(1.1); opacity: 0; filter: blur(20px); }
+    }
+
+    /* --- Main UI Section --- */
+    .container { width: 95%; max-width: 480px; z-index: 10; display: none; }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border-radius: 60px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        padding: 50px 30px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .glass-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 6s infinite;
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .page { display: none; position: relative; z-index: 2; }
+    .active { display: block; animation: pageIn 0.8s cubic-bezier(0.2, 0, 0.2, 1); }
+    
+    @keyframes pageIn {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    input {
+        padding: 22px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.4);
+        font-size: 26px; width: 100%; text-align: center; background: rgba(255,255,255,0.1);
+        color: white; margin-bottom: 25px; outline: none; transition: 0.3s;
+    }
+    input:focus { border-color: white; background: rgba(255,255,255,0.2); }
+
+    button {
+        padding: 20px 45px; border-radius: 60px; border: none; font-size: 20px;
+        font-weight: 600; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        font-family: 'Mitr', sans-serif;
+    }
+    button:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+
+    .btn-white { background: white; color: var(--premium-pink); width: 100%; }
+    .btn-pink { background: linear-gradient(45deg, var(--deep-pink), var(--premium-pink)); color: white; width: 100%; }
+
+    /* --- Photo stack & Typography --- */
+    #letterBox { 
+        background: rgba(255, 255, 255, 0.98); 
+        color: #222; 
+        padding: 35px 25px; 
+        border-radius: 45px; 
+        margin-top: 20px; 
+        text-align: left;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+    .photo-stack { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+    .photo-stack img { 
+        width: 48%; border: 10px solid white; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+    .photo-stack img:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 10; }
+    .photo-stack img:first-child { transform: rotate(-6deg); }
+    .photo-stack img:last-child { transform: rotate(6deg); }
+
+    .timer-luxury {
+        background: rgba(255, 117, 140, 0.1);
+        padding: 15px;
+        border-radius: 20px;
+        border: 1px dashed var(--premium-pink);
+    }
+</style>
+</head>
+<body>
+
+<div id="ambient-container"></div>
+
+<div id="start-page">
+    <h1 style="margin-bottom: 30px; font-weight: 500; text-shadow: 0 4px 10px rgba(0,0,0,0.1);">สำหรับแฟนที่น่ารักที่สุด 💖</h1>
+    <button class="start-btn" onclick="startEverything()">อย่ากดปุ่มนี้นะ เดี๋ยวจะยิ้ม ✨</button>
+</div>
+
+<div id="intro-overlay">
+    <div id="intro-text"></div>
+</div>
+
+<div class="container" id="main-container">
+    <div class="glass-card">
+        <div id="page1" class="page active">
+            <h1 style="font-size: 2.2rem;">🔐 เค้ามีเกมส์ให้เล่นน่ะ</h1>
+            <p style="opacity: 0.9;">ใส่วันครบรอบของเราเพื่อปลดล็อค <br><span style="font-size: 0.9rem;">(ใส่ผิดวันที่ 20 เจอเค้าหน่อย!)</span></p>
+            <input id="pass" maxlength="6" inputmode="numeric" placeholder="DDMMYY">
+            <p id="error" style="color: #fff; min-height: 26px; font-weight: 500;"></p>
+            <button onclick="checkPass()" class="btn-white">Unlock My Heart 💌</button>
+        </div>
+
+        <div id="page2" class="page">
+            <h2>เธอรักเค้ามั้ยครับ? 💕</h2>
+            <div style="margin-top: 40px; position: relative; min-height: 200px;">
+                <button id="loveBtn" onclick="celebrateLove()" class="btn-pink">รักที่สุดในโลกเยย</button> <br>
+                <button id="noBtn" onmouseover="runAway()" onclick="growLove()" style="background:transparent; border:2px solid white; color:white; margin-top:20px; border-radius:60px; padding:12px 30px; font-size: 16px;">ไม่รักหรอก แบร่ 😜</button>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <h2>The Surprise 🎁</h2>
+            <p>เค้ามีอะไรจะให้เธอด้วยแหละ ฮาฮ่า<br>ลองแตะที่กล่องดูสิ</p>
+            <div style="font-size:130px; cursor:pointer; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));" onclick="openEnvelope()">🎁</div>
+        </div>
+
+        <div id="page4" class="page">
+            <div style="font-size:130px; cursor:pointer;" id="envelope" onclick="openLetter()">💌</div>
+            <div id="letterBox" style="display:none;">
+                <div style="font-weight:600; font-size:1.6rem; color:var(--deep-pink); text-align:center; margin-bottom: 10px;">Happy Anniversary 2 Months ❤️</div>
+                <div id="liveTimer" class="timer-luxury" style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:25px;"></div>
+                <div class="photo-stack">
+                    <img src="photo1.jpg" alt="Our Mem 1">
+                    <img src="photo2.jpg" alt="Our Mem 2">
+                </div>
+                <div id="typeText" style="line-height: 1.8; font-weight: 400; color: #444;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+
+<script>
+const startDate = "2026-02-15T00:00:00";
+const correctPass = "150269";
+const steps = ["3", "2", "1", "Happy​<br>Anniversary​<br>2 months"];
+let stepIndex = 0;
+
+// Create ambient hearts
+function createAmbient() {
+    const container = document.getElementById('ambient-container');
+    const heartSymbols = ['💖', '💗', '💓', '✨'];
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'ambient-heart';
+        heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 7000);
+    }, 600);
+}
+
+// ฟังก์ชันเริ่มทุกอย่างพร้อม Fade Music
+function startEverything() {
+    const music = document.getElementById("music");
+    music.volume = 0;
+    music.play().catch(e => console.log("Audio play failed"));
+    
+    // Fade in music
+    let vol = 0;
+    const fadeInterval = setInterval(() => {
+        if (vol < 0.1) {
+            vol += 0.05;
+            music.volume = vol;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, 200);
+
+    document.getElementById("start-page").style.opacity = "0";
+    setTimeout(() => {
+        document.getElementById("start-page").style.display = "none";
+        document.getElementById("intro-overlay").style.display = "flex";
+        runIntro();
+    }, 1000);
+}
+
+function runIntro() {
+    const textEl = document.getElementById('intro-text');
+    if (stepIndex < steps.length) {
+        textEl.classList.remove('epic-zoom', 'final-hold');
+        void textEl.offsetWidth; 
+
+        if (stepIndex === 3) {
+            textEl.style.fontSize = "2.8rem";
+            textEl.innerHTML = steps[stepIndex];
+            textEl.classList.add('final-hold');
+            setTimeout(() => {
+                document.getElementById('intro-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'block';
+                    createAmbient();
+                }, 1500);
+            }, 6000);
+        } else {
+            textEl.style.fontSize = "8rem";
+            textEl.innerHTML = steps[stepIndex];
+            textEl.classList.add('epic-zoom');
+            stepIndex++;
+            setTimeout(runIntro, 1400);
+        }
+    }
+}
+
+function fireConfetti() {
+    confetti({ 
+        particleCount: 150, 
+        spread: 80, 
+        origin: { y: 0.6 }, 
+        colors: ['#ff758c', '#ff4b5c', '#ffffff'],
+        ticks: 300
+    });
+}
+
+function checkPass(){
+    if(document.getElementById("pass").value === correctPass){
+        fireConfetti(); 
+        setTimeout(() => showPage(2), 600);
+    } else {
+        document.getElementById("error").innerText = "จำไม่ได้จริงๆหย๋อ เค้าเสียใจนะ 😔";
+        document.getElementById("pass").value = "";
+    }
+}
+
+document.getElementById("pass").addEventListener("keyup", (e) => { if(e.target.value.length === 6) checkPass(); });
+
+function showPage(n){
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page" + n).classList.add("active");
+}
+
+function celebrateLove() { 
+    fireConfetti(); 
+    setTimeout(() => showPage(3), 800); 
+}
+
+function growLove(){ 
+    let b = document.getElementById("loveBtn"); 
+    let s = parseInt(window.getComputedStyle(b).fontSize); 
+    b.style.fontSize = (s + 12) + "px"; 
+    b.style.padding = "25px 55px";
+}
+
+function runAway(){ 
+    let b = document.getElementById("noBtn"); 
+    b.style.position = "fixed"; 
+    b.style.left = Math.random()*70+15+"vw"; 
+    b.style.top = Math.random()*70+15+"vh"; 
+    b.style.zIndex = "1000";
+}
+
+function openEnvelope(){ showPage(4); }
+
+function openLetter(){
+    fireConfetti();
+    document.getElementById("envelope").style.display = "none";
+    document.getElementById("letterBox").style.display = "block";
+    setInterval(() => {
+        let diff = new Date() - new Date(startDate);
+        let d = Math.floor(diff / 86400000);
+        let h = Math.floor((diff % 86400000) / 3600000);
+        let m = Math.floor((diff % 3600000) / 60000);
+        let s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("liveTimer").innerHTML = `เราอยู่ด้วยกันมาแล้ว <br><b style="font-size: 1.1rem; color: #ff4b5c;">${d} วัน ${h} ชั่วโมง ${m} นาที ${s} วินาที</b>`;
+    }, 1000);
+    typeText();
+}
+
+function typeText(){
+    let text = "คุณแฟนที่น่ารักของเค้า 💖\n\nเค้าดีใจมากเลยนะที่มีเธอเข้ามาในชีวิต ตลอด 2 เดือนที่ผ่านมาคือช่วงเวลาที่เค้ามีความสุขที่สุดเลย\n\nขอบคุณที่อยู่ข้างเค้าเสมอ ขอบคุณที่น่ารักและคอยซัพพอร์ตกันตลอด ถึงเค้าจะอยู่ไกลให้ของขวัญไม่ได้แต่เค้าตั้งใจทำให้เธอเลยนะ\n\nเค้าจะตั้งใจรักเธอให้ดีที่สุดในทุกๆ วันเลย 💕\n\nรักเธอมากที่สุดในโลกเลยนะ กิ้วๆ! 💖";
+    let i = 0; let target = document.getElementById("typeText"); target.innerHTML = "";
+    function typing(){ 
+        if(i < text.length){ 
+            target.innerHTML += text[i]==="\n"?"<br>":text[i]; 
+            i++; 
+            setTimeout(typing, 55); 
+        } 
+    }
+    typing();
+}
+</script>
+</body>
+</html>
