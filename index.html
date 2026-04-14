@@ -25,11 +25,15 @@
         color: white;
         min-height: 100vh;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        /* เปลี่ยนจาก overflow: hidden เป็น auto เพื่อให้เลื่อนทั้งหน้าจอได้ */
-        overflow-x: hidden;
-        overflow-y: auto; 
+        
+        /* --- ส่วนที่ต้องเปลี่ยน --- */
+        flex-direction: column;    /* จัดวางแนวตั้ง */
+        align-items: center;       /* จัดกลางแนวขวาง */
+        justify-content: flex-start; /* เริ่มต้นจากด้านบนของจอ (ไม่ค้างกลางจอ) */
+        padding: 40px 0;           /* เพิ่มระยะห่างบน-ล่าง ให้กล่องไม่ชิดขอบจอเกินไป */
+        overflow-y: auto;          /* ให้เลื่อนที่พื้นหลังชมพูได้ทั้งหน้าจอ */
+        height: auto;              /* ให้ body ยาวตามเนื้อหา */
+        /* ---------------------- */
     }
 
     /* --- Ambient Elements --- */
@@ -137,13 +141,13 @@
         margin-top: 20px; 
         text-align: left;
         box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        
-        /* แก้ไขให้เลื่อนได้ในมือถือ */
-        max-height: 60vh; /* จำกัดความสูงของกระดาษจดหมาย */
-        overflow-y: auto; /* ให้เลื่อนขึ้นลงได้ */
-        word-wrap: break-word;
-        white-space: pre-wrap; /* รองรับ \n ให้ขึ้นบรรทัดใหม่ */
-        -webkit-overflow-scrolling: touch; /* ทำให้เลื่อนใน iPhone ลื่นๆ */
+
+        /* --- ส่วนที่ต้องเปลี่ยน --- */
+        height: auto;             /* ให้ความสูงปรับตามเนื้อหา */
+        overflow-y: visible;      /* ปิดแถบเลื่อนในกล่องขาว ให้มันยาวออกมาเลย */
+        white-space: pre-wrap;    /* รองรับ \n ให้ขึ้นบรรทัดใหม่ */
+        word-wrap: break-word;    /* ตัดคำอัตโนมัติ */
+        /* ---------------------- */
     }
 
     .glass-card::before {
