@@ -26,14 +26,14 @@
         min-height: 100vh;
         display: flex;
         
-        /* --- ส่วนที่ต้องเปลี่ยน --- */
-        flex-direction: column;    /* จัดวางแนวตั้ง */
+        /* --- แก้ไขจุดนี้ --- */
+        flex-direction: column;    /* จัดวางแบบแนวตั้ง */
         align-items: center;       /* จัดกลางแนวขวาง */
-        justify-content: flex-start; /* เริ่มต้นจากด้านบนของจอ (ไม่ค้างกลางจอ) */
-        padding: 40px 0;           /* เพิ่มระยะห่างบน-ล่าง ให้กล่องไม่ชิดขอบจอเกินไป */
-        overflow-y: auto;          /* ให้เลื่อนที่พื้นหลังชมพูได้ทั้งหน้าจอ */
-        height: auto;              /* ให้ body ยาวตามเนื้อหา */
-        /* ---------------------- */
+        justify-content: flex-start; /* เริ่มต้นจากด้านบน */
+        padding: 20px 0;           /* เพิ่มที่ว่างบน-ล่าง */
+        overflow-x: hidden;        /* ปิดการเลื่อนซ้ายขวา */
+        overflow-y: auto;          /* เปิดให้เลื่อนขึ้นลงได้ */
+        height: auto;              /* ให้ความสูงยืดตามเนื้อหา */
     }
 
     /* --- Ambient Elements --- */
@@ -132,22 +132,7 @@
         padding: 50px 30px;
         box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
         position: relative;
-    }
-    #letterBox { 
-        background: rgba(255, 255, 255, 0.98); 
-        color: #222; 
-        padding: 25px 20px; 
-        border-radius: 30px; 
-        margin-top: 20px; 
-        text-align: left;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-
-        /* --- ส่วนที่ต้องเปลี่ยน --- */
-        height: auto;             /* ให้ความสูงปรับตามเนื้อหา */
-        overflow-y: visible;      /* ปิดแถบเลื่อนในกล่องขาว ให้มันยาวออกมาเลย */
-        white-space: pre-wrap;    /* รองรับ \n ให้ขึ้นบรรทัดใหม่ */
-        word-wrap: break-word;    /* ตัดคำอัตโนมัติ */
-        /* ---------------------- */
+        overflow: visible; /* เปลี่ยนจาก hidden เพื่อให้กล่องจดหมายยืดออกมาได้ */
     }
 
     .glass-card::before {
@@ -201,6 +186,12 @@
         margin-top: 20px; 
         text-align: left;
         box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+
+        /* --- เพิ่มเติมจุดนี้ --- */
+        height: auto;             /* ยืดตามเนื้อหา */
+        overflow: visible;        /* ไม่ต้องมีแถบเลื่อนในกล่องขาว */
+        white-space: pre-wrap;    /* สำคัญ: เพื่อให้ \n แสดงผลขึ้นบรรทัดใหม่ */
+        word-wrap: break-word;    /* ป้องกันตัวอักษรล้นขอบ */
     }
     .photo-stack { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
     .photo-stack img { 
@@ -237,15 +228,15 @@
 <div class="container" id="main-container">
     <div class="glass-card">
         <div id="page1" class="page active">
-            <h1 style="font-size: 2.2rem;">🔐 เค้ามีเกมส์ให้เล่นน่ะ</h1>
-            <p style="opacity: 0.9;">ใส่วันครบรอบของเราเพื่อปลดล็อค <br><span style="font-size: 0.9rem;">(ใส่ผิดวันที่ 20 เจอเค้าหน่อย!)</span></p>
+            <h1 style="font-size: 2.2rem;">🔐 เกมทายใจ</h1>
+            <p style="opacity: 0.9;">ใส่วันครบรอบของเราเพื่อปลดล็อค <br><span style="font-size: 0.9rem;">(ใส่ผิดวันที่ 20 เจอเค้าแน่!)</span></p>
             <input id="pass" maxlength="6" inputmode="numeric" placeholder="DDMMYY">
             <p id="error" style="color: #fff; min-height: 26px; font-weight: 500;"></p>
             <button onclick="checkPass()" class="btn-white">Unlock My Heart 💌</button>
         </div>
 
         <div id="page2" class="page">
-            <h2>เธอรักเค้ามั้ยครับ? 💕</h2>
+            <h2>เธอรักเค้าจริงมั้ยครับ? 💕</h2>
             <div style="margin-top: 40px; position: relative; min-height: 200px;">
                 <button id="loveBtn" onclick="celebrateLove()" class="btn-pink">รักที่สุดในโลกเยย</button> <br>
                 <button id="noBtn" onmouseover="runAway()" onclick="growLove()" style="background:transparent; border:2px solid white; color:white; margin-top:20px; border-radius:60px; padding:12px 30px; font-size: 16px;">ไม่รักหรอก แบร่ 😜</button>
@@ -254,7 +245,7 @@
 
         <div id="page3" class="page">
             <h2>The Surprise 🎁</h2>
-            <p>เค้ามีอะไรจะให้เธอด้วยแหละ ฮาฮ่า<br>ลองแตะที่กล่องดูสิ</p>
+            <p>เค้ามีอะไรจะให้เธอด้วยแหละ <br>ลองแตะที่กล่องดูสิ</p>
             <div style="font-size:130px; cursor:pointer; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));" onclick="openEnvelope()">🎁</div>
         </div>
 
